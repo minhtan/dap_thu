@@ -1,16 +1,15 @@
 ﻿#pragma strict
 import System.Collections.Generic;
 
-private var soDuocchon : int;
-var time : float = 3.0f;
+//Thu duoc luu vao trong array
 private var arrayThu : List.<GameObject>;
+//Trang thai thu dang dc chon
 private var objTrangThai : TrangThai;
+
 function Start () {
  	arrayThu = new List.<GameObject>();
  	arrayThu = NhetThuVaoChuong();
-	print(HienThu());
-	print(HienThu());	
-	print(HienThu());
+ 	InvokeRepeating("HienThu", 1 , 3);
 }
 
 function Update () {
@@ -24,27 +23,37 @@ function NhetThuVaoChuong(){
 	return arrayThu;
 }
 
-function ChonSoNgauNhien(){
-	soDuocchon = Random.Range(0,3);
-	return soDuocchon;
+function ChonSoNgauNhien(range : int){
+	return Random.Range(0, arrayThu.Count - 1);
 }
 
-function KtraThuSong(number : int){
+function KtraThuAn(number : int){
 	objTrangThai = arrayThu[number].GetComponent.<TrangThai>();
-	if(objTrangThai.GetTrangThai() != 0){
+	if(objTrangThai.GetTrangThai() == 0){
 		return true;
 	}else{
 		return false;
 	}
 }
 
+function KtraThuDay(){
+	for(var thu : GameObject in arrayThu){
+		if(thu.GetComponent.<TrangThai>().GetTrangThai() == 0){
+			return false;
+		}
+	}
+	return true;
+}
+
 function HienThu(){
-	var ktraThu : boolean;
-	var soNgauNhien : int;
+	var randomNo : int;
 	do{
-		soNgauNhien = ChonSoNgauNhien();
-		ktraThu = KtraThuSong(soNgauNhien);
-	}while(ktraThu);
-	objTrangThai.Show();
-	return objTrangThai.name;
+		randomNo = ChonSoNgauNhien ();
+		if(KtraThuAn (randomNo)){
+			objTrangThai.Show();
+			Debug.Log("Hien thu: " + arrayThu[randomNo].name);
+			break;
+		}
+	}while(!KtraThuDay ());
+	Debug.Log("Hien thu, time: " + Time.time);
 }

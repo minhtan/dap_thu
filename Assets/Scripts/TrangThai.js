@@ -4,21 +4,18 @@
 private var trangThai : int;
 //thoi gian con thu xuat hien
 var showTime : float = 5.0f;
-//id cua thu
-var id : int;
+
 function Start () {
 	Hide();
-	Show();
 }
 
 function Update () {
-	// true la hitDetect
-	Control(true);
+	Control(false);
 }
 
 function Control(dapBua:boolean){
 	switch(trangThai){
-		case 4:
+		case 0:
 			break;
 		case 1:
 			if(dapBua){
@@ -40,8 +37,8 @@ function Die(){
 }
 function Show(){
 	trangThai = 1;
-	Invoke("Hide", showTime);
+//	Invoke("Hide", showTime);
 }
 function Hide(){
-	trangThai = 4;
+	trangThai = 0;
 }
