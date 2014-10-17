@@ -1,5 +1,7 @@
 ﻿#pragma strict
 
+
+
 function HitDetect(){
 	if(Input.touchCount > 0)
 	{

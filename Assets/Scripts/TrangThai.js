@@ -3,13 +3,9 @@
 //0: an, 1: hien, -1: chet
 private var trangThai : int;
 //thoi gian con thu xuat hien
-var showTime : float = 5.0;
+var showTime : float = 5.0f;
 //id cua thu
 var id : int;
-
-var controlInput : ControlInput;
-
-
 function Start () {
 	Hide();
 	Show();
@@ -22,7 +18,7 @@ function Update () {
 
 function control(dapBua:boolean){
 	switch(trangThai){
-		case 0:
+		case 4:
 			break;
 		case 1:
 			if(dapBua){
@@ -36,16 +32,16 @@ function control(dapBua:boolean){
 	}
 }
 
+public function getTrangThai(){
+	return trangThai;
+}
 function Die(){
 	trangThai = -1;
-	print("chet");
 }
 function Show(){
 	trangThai = 1;
-	Invoke("Hide", showTime);
-	print("song");
+	Invoke("Hide", showTime);;
 }
 function Hide(){
-	trangThai = 0;
-	print("an");
+	trangThai = 4;
 }
