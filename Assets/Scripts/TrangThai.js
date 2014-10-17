@@ -13,10 +13,10 @@ function Start () {
 
 function Update () {
 	// true la hitDetect
-	control(true);
+	Control(true);
 }
 
-function control(dapBua:boolean){
+function Control(dapBua:boolean){
 	switch(trangThai){
 		case 4:
 			break;
@@ -32,7 +32,7 @@ function control(dapBua:boolean){
 	}
 }
 
-public function getTrangThai(){
+public function GetTrangThai(){
 	return trangThai;
 }
 function Die(){
@@ -40,7 +40,7 @@ function Die(){
 }
 function Show(){
 	trangThai = 1;
-	Invoke("Hide", showTime);;
+	Invoke("Hide", showTime);
 }
 function Hide(){
 	trangThai = 4;
