@@ -23,7 +23,7 @@ function NhetThuVaoChuong(){
 	return arrayThu;
 }
 
-function ChonSoNgauNhien(range : int){
+function ChonSoNgauNhien(){
 	return Random.Range(0, arrayThu.Count - 1);
 }
 
