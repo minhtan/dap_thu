@@ -6,39 +6,39 @@ private var trangThai : int;
 var showTime : float = 5.0f;
 
 function Start () {
-	Hide();
+	hide();
 }
 
 function Update () {
-	Control(false);
+	updateTrangThai(false);
 }
 
-function Control(dapBua:boolean){
+function updateTrangThai(dapBua:boolean){
 	switch(trangThai){
 		case 0:
 			break;
 		case 1:
 			if(dapBua){
-				CancelInvoke("Hide");
-				Die();
+				CancelInvoke("hide");
+				die();
 			}
 			break;
 		case -1:
-			Hide();
+			hide();
 			break;		
 	}
 }
 
-public function GetTrangThai(){
+public function getTrangThai(){
 	return trangThai;
 }
-function Die(){
+function die(){
 	trangThai = -1;
 }
-function Show(){
+function show(){
 	trangThai = 1;
-//	Invoke("Hide", showTime);
+//	Invoke("hide", showTime);
 }
-function Hide(){
+function hide(){
 	trangThai = 0;
 }

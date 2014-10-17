@@ -1,59 +1,49 @@
 ﻿#pragma strict
+#pragma downcast
 import System.Collections.Generic;
 
 //Thu duoc luu vao trong array
-private var arrayThu : List.<GameObject>;
-//Trang thai thu dang dc chon
-private var objTrangThai : TrangThai;
+private var listThu : List.<GameObject>;
+//Thoi gian giua goc cac lan thu hien
+var baseInterval : float = 3.0;
+//muc do giam cua thoi gian giua cac lan thu hien
+var intervalStep : float = 0.5;
 
 function Start () {
- 	arrayThu = new List.<GameObject>();
- 	arrayThu = NhetThuVaoChuong();
- 	InvokeRepeating("HienThu", 1 , 3);
+	listThu = new List.<GameObject>();
+ 	listThu = nhetThuVaoChuong();
+ 	InvokeRepeating("showThu", 0, baseInterval);
 }
 
-function Update () {
-	 
-}
-
-function NhetThuVaoChuong(){
-	for(var child : Transform in transform){
-		arrayThu.Add(child.gameObject);
+function nhetThuVaoChuong(){
+	for(var thu : Transform in transform){
+		listThu.Add(thu.gameObject);
 	}
-	return arrayThu;
+	return listThu;
 }
 
-function ChonSoNgauNhien(){
-	return Random.Range(0, arrayThu.Count - 1);
+function randomThu(range : int){
+	return Random.Range(0, range);
 }
 
-function KtraThuAn(number : int){
-	objTrangThai = arrayThu[number].GetComponent.<TrangThai>();
-	if(objTrangThai.GetTrangThai() == 0){
-		return true;
+function filterHiddenThu(){
+	var listHiddenThu : List.<GameObject> = new List.<GameObject>();
+	for(var thu : GameObject in listThu){
+		if(thu.GetComponent.<TrangThai>().getTrangThai() == 0)
+			listHiddenThu.Add(thu);
+	}
+	return listHiddenThu;
+}
+
+function showThu(){
+	var listHiddenThu : List.<GameObject> = filterHiddenThu();
+	if(listHiddenThu.Count > 0){
+		var randomNo : int = randomThu(listHiddenThu.Count - 1);
+		listHiddenThu[randomNo].GetComponent.<TrangThai>().show();
+		Debug.Log(listHiddenThu[randomNo].name + " da hien vao luc " + Time.time);
 	}else{
-		return false;
+	 	Debug.Log("Khong co thu an");
 	}
 }
 
-function KtraThuDay(){
-	for(var thu : GameObject in arrayThu){
-		if(thu.GetComponent.<TrangThai>().GetTrangThai() == 0){
-			return false;
-		}
-	}
-	return true;
-}
 
-function HienThu(){
-	var randomNo : int;
-	do{
-		randomNo = ChonSoNgauNhien ();
-		if(KtraThuAn (randomNo)){
-			objTrangThai.Show();
-			Debug.Log("Hien thu: " + arrayThu[randomNo].name);
-			break;
-		}
-	}while(!KtraThuDay ());
-	Debug.Log("Hien thu, time: " + Time.time);
-}
