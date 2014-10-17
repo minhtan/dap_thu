@@ -9,7 +9,6 @@ function Start () {
  	arrayThu = new List.<GameObject>();
  	arrayThu = NhetThuVaoChuong();
 	print(HienThu());
-	yield WaitForSeconds(3.0);
 	print(HienThu());	
 	print(HienThu());
 }
@@ -47,5 +46,5 @@ function HienThu(){
 		ktraThu = KtraThuSong(soNgauNhien);
 	}while(ktraThu);
 	objTrangThai.Show();
-	return objTrangThai.GetTrangThai();
+	return objTrangThai.name;
 }
