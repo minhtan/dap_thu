@@ -40,9 +40,13 @@ function showThu(){
 	if(listHiddenThu.Count > 0){
 		var randomNo : int = randomThu(listHiddenThu.Count - 1);
 		listHiddenThu[randomNo].GetComponent.<TrangThai>().show();
-		Debug.Log(listHiddenThu[randomNo].name + " da hien vao luc " + Time.time);
-	}else{
-	 	Debug.Log("Khong co thu an");
+	}
+}
+
+function dapThu(thu : GameObject){
+	var trangThaiScript : TrangThai = thu.GetComponent.<TrangThai>();
+	if(trangThaiScript.getTrangThai() == 1){
+		trangThaiScript.die();
 	}
 }
 
