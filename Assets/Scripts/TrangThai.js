@@ -7,12 +7,31 @@ var showTime : float = 2.0f;
 //components reference
 private var anim : Animator;
 
-function Awake () {
-	anim = GetComponent.<Animator>();
+//click control
+private var clicked : boolean;
+var clickInterval : float;
+
+function isClicked(){
+	return clicked;
+}
+
+function click(){
+	clicked = true;
+	Invoke("unclick", clickInterval);
+}
+
+function unclick(){
+	clicked = false;
 }
 
 function isAlive(){
 	return alive;
+}
+// end click control
+
+function Awake () {
+	anim = GetComponent.<Animator>();
+	clicked = false;
 }
 
 function Update(){
@@ -37,7 +56,8 @@ function hide(){
 }
 
 function getHit(){
-	if(alive == true){
+	if(alive == true && anim.GetCurrentAnimatorStateInfo(0).IsName("showed")){
+		click();
 		CancelInvoke("hide");
 		die();
 	}

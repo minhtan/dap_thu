@@ -25,12 +25,16 @@ class ScoreMilestone extends System.Object{
 }
 var scoreMilestones : ScoreMilestone[];
 
+//input reference
+var input : InputControl;
+
 //***************************************************************************************************
 //*******************************************FUNCTIONS***********************************************
 //***************************************************************************************************
 
 function Awake(){
 	gameover = false;
+	input = gameObject.GetComponent.<InputControl>();
 }
 
 function Start () {
@@ -41,6 +45,7 @@ function Start () {
 
 function Update(){
 	checkScore();
+	checkHit();
 }
 
 function checkScore(){
@@ -85,10 +90,12 @@ function showThu(){
 	}
 }
 
-function dapThu(thu : GameObject){
-	var trangThaiScript : TrangThai = thu.GetComponent.<TrangThai>();
-	if(trangThaiScript.isAlive() == true){
-		trangThaiScript.die();
+function checkHit(){
+	var thu : GameObject = input.hitDetect();
+	if(thu != null && thu.GetComponent.<TrangThai>() != null){
+		if(thu.GetComponent.<TrangThai>().isClicked() == false){
+			thu.GetComponent.<TrangThai>().getHit();
+		}
 	}
 }
 
