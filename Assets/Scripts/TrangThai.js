@@ -1,11 +1,13 @@
 ﻿#pragma strict
-//trang thai con thu 
-//0: an, 1: hien, -1: chet
-var alive : boolean = false;
 //thoi gian con thu xuat hien
 var showTime : float = 2.0f;
+
 //components reference
 private var anim : Animator;
+private var gameControl : GameControl;
+
+//points for this thu
+var thuPoint : int = 1;
 
 //click control
 private var clicked : boolean;
@@ -23,23 +25,33 @@ function click(){
 function unclick(){
 	clicked = false;
 }
+//end click control
 
-function isAlive(){
-	return alive;
+function getThuPoint(){
+	return thuPoint;
 }
-// end click control
+
+function isHitable(){
+	if(anim.GetCurrentAnimatorStateInfo(0).IsName("showed") || anim.GetCurrentAnimatorStateInfo(0).IsName("showing")){
+		return true;
+	}else{
+		return false;
+	}
+}
+
+function isDead(){
+	if(anim.GetCurrentAnimatorStateInfo(0).IsName("hidden")){
+		return true;
+	}else{
+		return false;
+	}
+}
 
 function Awake () {
 	anim = GetComponent.<Animator>();
+	gameControl = GameObject.Find("/HolesContainer").GetComponent.<GameControl>();
 	clicked = false;
-}
-
-function Update(){
-	if(anim.GetCurrentAnimatorStateInfo(0).IsName("hidden")){
-		alive = false;
-	}else{
-		alive = true;
-	}
+	anim.SetFloat("powerUp", 0.0);
 }
 
 function die(){
@@ -51,14 +63,22 @@ function show(){
 	Invoke("hide", showTime);
 }
 
+function show(powerUp : float){
+	anim.SetFloat("powerUp", powerUp);
+	anim.SetTrigger("show");
+	Invoke("hide", showTime);
+}
+
 function hide(){
 	anim.SetTrigger("hide");
+	gameControl.miss();
 }
 
 function getHit(){
-	if(alive == true && anim.GetCurrentAnimatorStateInfo(0).IsName("showed")){
-		click();
-		CancelInvoke("hide");
-		die();
+	if(anim.GetFloat("powerUp") == 1.0){
+		gameControl.hitX2();
 	}
+	click();
+	CancelInvoke("hide");
+	die();
 }
