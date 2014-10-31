@@ -74,10 +74,21 @@ function hide(){
 	gameControl.miss();
 }
 
-function getHit(){
-	if(anim.GetFloat("powerUp") == 1.0){
-		gameControl.hitX2();
+function checkPowerUp(){
+	switch(anim.GetFloat("powerUp")){
+		case 1.0:
+			gameControl.hitX2();
+			break;
+		case 2.0:
+			gameControl.hitSlow();
+			break;
+		default:
+			break;
 	}
+}
+
+function getHit(){
+	checkPowerUp();
 	click();
 	CancelInvoke("hide");
 	die();

@@ -24,6 +24,7 @@ function gameInit(){
 	faultUsed = 0;
 	powerUpUsed = 0;
 	powerX2 = false;
+	powerSlow = false;
 }
 
 function Awake(){
@@ -61,6 +62,13 @@ function filterHiddenThu(){
 	return listHiddenThu;
 }
 
+function waitForRealSecond(time : float){
+	var startTime : float = Time.realtimeSinceStartup;
+	while(Time.realtimeSinceStartup < startTime + time){
+		yield;
+	}
+}
+
 function showThu(){
 	var listHiddenThu : List.<GameObject>;
 	while(!gameover){
@@ -69,7 +77,7 @@ function showThu(){
 			var trangThaiThu : TrangThai = listHiddenThu[random(listHiddenThu.Count)].GetComponent.<TrangThai>();
 			trangThaiThu.show(randomPowerUp());
 		}
-		yield WaitForSeconds (interval);
+		yield waitForRealSecond (interval);
 	}
 }
 
@@ -141,11 +149,27 @@ var powerUpChance : int = 33;
 private var powerX2 : boolean;
 var x2time : int = 5;
 
+//slow mo
+private var powerSlow : boolean;
+var slowTime : int = 5;
+
 function randomPowerUp(){
-	if(powerUpUsed < powerUpLimit){
-		if(random(100) < powerUpChance && !powerX2){
-			powerUpUsed ++;
-			return 1.0;
+	if(powerUpUsed < powerUpLimit && random(100) < powerUpChance){
+		switch(random(2)){
+			case 0:
+				if(!powerX2){
+					powerUpUsed ++;
+					return 1.0;
+				}
+				break;
+			case 1:
+				if(!powerSlow){
+					powerUpUsed ++;
+					return 2.0;
+				}
+				break;
+			default:
+				break;
 		}
 	}
 	return 0.0;
@@ -155,4 +179,12 @@ function hitX2(){
 	powerX2 = true;
 	yield WaitForSeconds (x2time);
 	powerX2 = false;
+}
+
+function hitSlow(){
+	powerSlow = true;
+	Time.timeScale = 0.5;
+	yield WaitForSeconds (slowTime);
+	powerSlow = false;
+	Time.timeScale = 1.0;
 }
