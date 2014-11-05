@@ -9,6 +9,9 @@ import System.Collections.Generic;
 //input reference
 private var input : InputControl;
 
+//sound reference
+private var sound : SoundControl;
+
 //gameover?
 private var gameover : boolean;
 
@@ -29,7 +32,8 @@ function gameInit(){
 
 function Awake(){
 	gameInit();
-	input = gameObject.GetComponent.<InputControl>();
+	input = GetComponent.<InputControl>();
+	sound = GetComponent.<SoundControl>();
 }
 
 function Start () {
@@ -85,9 +89,10 @@ function checkHit(){
 	var thu : GameObject = input.hitDetect();
 	if(thu != null && thu.GetComponent.<TrangThai>() != null){
 		var trangThaiThu : TrangThai = thu.GetComponent.<TrangThai>();
-		if(trangThaiThu.isHitable() && trangThaiThu.isClicked() == false){
-			thu.GetComponent.<TrangThai>().getHit();
-			scoring(thu.GetComponent.<TrangThai>().getThuPoint());
+		if(trangThaiThu.isHitable()){
+			trangThaiThu.getHit();
+			sound.playHitSound();
+			scoring(trangThaiThu.getThuPoint());
 		}
 	}
 }
