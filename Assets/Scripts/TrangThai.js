@@ -1,44 +1,95 @@
 ﻿#pragma strict
-//trang thai con thu 
-//0: an, 1: hien, -1: chet
-private var trangThai : int;
 //thoi gian con thu xuat hien
-var showTime : float = 5.0f;
+var showTime : float = 2.0f;
 
-function Start () {
-	Hide();
+//components reference
+private var anim : Animator;
+private var gameControl : GameControl;
+
+//points for this thu
+var thuPoint : int = 1;
+
+//click control
+private var clicked : boolean;
+var clickInterval : float;
+
+function isClicked(){
+	return clicked;
 }
 
-function Update () {
-	Control(false);
+function click(){
+	clicked = true;
+	Invoke("unclick", clickInterval);
 }
 
-function Control(dapBua:boolean){
-	switch(trangThai){
-		case 0:
-			break;
-		case 1:
-			if(dapBua){
-				CancelInvoke("Hide");
-				Die();
-			}
-			break;
-		case -1:
-			Hide();
-			break;		
+function unclick(){
+	clicked = false;
+}
+//end click control
+
+function getThuPoint(){
+	return thuPoint;
+}
+
+function isHitable(){
+	if(anim.GetCurrentAnimatorStateInfo(0).IsName("showed") || anim.GetCurrentAnimatorStateInfo(0).IsName("showing")){
+		return true;
+	}else{
+		return false;
 	}
 }
 
-public function GetTrangThai(){
-	return trangThai;
+function isDead(){
+	if(anim.GetCurrentAnimatorStateInfo(0).IsName("hidden")){
+		return true;
+	}else{
+		return false;
+	}
 }
-function Die(){
-	trangThai = -1;
+
+function Awake () {
+	anim = GetComponent.<Animator>();
+	gameControl = GameObject.Find("/HolesContainer").GetComponent.<GameControl>();
+	clicked = false;
+	anim.SetFloat("powerUp", 0.0);
 }
-function Show(){
-	trangThai = 1;
-//	Invoke("Hide", showTime);
+
+function die(){
+	anim.SetTrigger("die");
 }
-function Hide(){
-	trangThai = 0;
+
+function show(){
+	anim.SetTrigger("show");
+	Invoke("hide", showTime);
+}
+
+function show(powerUp : float){
+	anim.SetFloat("powerUp", powerUp);
+	anim.SetTrigger("show");
+	Invoke("hide", showTime);
+}
+
+function hide(){
+	anim.SetTrigger("hide");
+	gameControl.miss();
+}
+
+function checkPowerUp(){
+	switch(anim.GetFloat("powerUp")){
+		case 1.0:
+			gameControl.hitX2();
+			break;
+		case 2.0:
+			gameControl.hitSlow();
+			break;
+		default:
+			break;
+	}
+}
+
+function getHit(){
+	checkPowerUp();
+	click();
+	CancelInvoke("hide");
+	die();
 }
