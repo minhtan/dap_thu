@@ -1,38 +1,62 @@
 ﻿#pragma strict
-
+var originalWidth = 800;
+var originalHeight = 480;
 var mySkin : GUISkin;
-var controlTexture : Texture2D;
-
-var originalWidth = 800.0;  // define here the original resolution
-var originalHeight = 600.0; // you used to create the GUI contents 
-private var scale: Vector3;
-
-function OnGUI(){
-	scale.x = Screen.width/originalWidth; // calculate hor scale
-  	scale.y = Screen.height/originalHeight; // calculate vert scale
-  	scale.z = 1;
-  	var svMat = GUI.matrix; // save current matrix
-  	// substitute matrix - only scale is altered from standard
-  	GUI.matrix = Matrix4x4.TRS(Vector3.zero, Quaternion.identity, scale);
-
-	GUI.skin = mySkin;
-	showScore(5);
-	showPowerUps();
-	showPauseBtn();
-	
-	GUI.matrix = svMat; // restore matrix
-}
-
-function showScore(score : int){
-	GUI.Label (Rect(10, 10, 100, 50), "Score: " + score);
-}
-
-function showPowerUps(){
-	GUI.Label(Rect ((Screen.width - 310)/2, 10, 300, 50), GUIContent("power up", controlTexture));
-}
-
-function showPauseBtn(){
-	if (GUI.Button (Rect (Screen.width - 110,10, 100, 50), "Pause")) {
-    	print ("clicked on pause");
+var ratio : int = 20;
+var fontSize : float = 20;
+private var widthScore;
+private var heightScore;
+var ratioScore :float = 4;
+function Update(){
+	if(CheckScreenSize()){
+		widthScore = Screen.width / ratioScore;
+		heightScore =  Screen.height / ratioScore;
+	}else{
+		heightScore = originalHeight / ratioScore;
+		widthScore = originalWidth / ratioScore;
 	}
 }
+
+private function CheckScreenSize(): boolean{
+	if(originalWidth != Screen.width || originalHeight != Screen.height){
+		return true;
+	}else{
+		return false;
+	}
+}
+private function AutoFontSize(): void
+{
+	if(CheckScreenSize()){
+		fontSize = Mathf.Min(Screen.width, Screen.height) / ratio;
+	}
+}
+
+//private function AutoResizeGUI(): void{
+//	if(CheckScreenSize()){
+//		widthScore = Screen.width / ratioScore;
+//		heightScore =  Screen.height / ratioScore;
+//	}else{
+//		heightScore = originalHeight / ratioScore;
+//		widthScore = originalWidth / ratioScore;
+//	}
+//}
+
+function OnGUI(){
+	GUI.skin = mySkin;
+	GUI.contentColor = Color.red;
+	GUI.skin.label.fontSize = fontSize;
+	AutoFontSize();
+//	AutoResizeGUI();
+	ShowScore(1000);
+ 	
+}
+
+
+
+private function ShowScore(score : int): void{
+	GUI.Label(Rect(0,0,widthScore,heightScore),"Score:" + score);
+}
+
+
+
+
