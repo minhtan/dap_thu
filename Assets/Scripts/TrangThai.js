@@ -15,7 +15,7 @@ function getThuPoint(){
 }
 
 function isHitable(){
-	if(!anim.GetCurrentAnimatorStateInfo(0).IsName("hidden") && !anim.GetCurrentAnimatorStateInfo(0).IsName("dying") && !anim.GetCurrentAnimatorStateInfo(0).IsName("hiding") && !isHit){
+	if(!anim.GetCurrentAnimatorStateInfo(0).IsName("hidden") && !anim.GetCurrentAnimatorStateInfo(0).IsName("dying") && !isHit){
 		return true;
 	}else{
 		return false;
@@ -38,7 +38,13 @@ function Awake () {
 }
 
 function die(){
-	anim.SetTrigger("die");
+	if(anim.GetCurrentAnimatorStateInfo(0).IsName("showing")){
+		anim.Play("dying", -1, 1 - anim.GetCurrentAnimatorStateInfo(0).normalizedTime);
+	}else if(anim.GetCurrentAnimatorStateInfo(0).IsName("hiding")){
+		anim.Play("dying", -1, anim.GetCurrentAnimatorStateInfo(0).normalizedTime);
+	}else{
+		anim.Play("dying", -1, 0);
+	}
 	CancelInvoke("hide");
 	isHit = true;
 }
@@ -52,7 +58,6 @@ function show(powerUp : float){
 
 function hide(){
 	anim.SetTrigger("hide");
-	CancelInvoke("hide");
 	gameControl.miss();
 }
 
