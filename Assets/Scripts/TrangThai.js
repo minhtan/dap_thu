@@ -8,7 +8,8 @@ private var gameControl : GameControl;
 private var isHit : boolean;
 
 //points for this thu
-var thuPoint : int = 1;
+private var thuPoint : int;
+private var thuHealth : int;
 
 function getThuPoint(){
 	return thuPoint;
@@ -49,11 +50,33 @@ function die(){
 	isHit = true;
 }
 
-function show(powerUp : float){
-	anim.SetFloat("powerUp", powerUp);
+function show(event : float){
+	anim.SetFloat("powerUp", event);
 	anim.SetTrigger("show");
 	isHit = false;
+	checkThuType(event);
 	Invoke("hide", showTime);
+}
+
+function checkThuType(event : float){
+	switch(event){
+		case 3.0:
+			thuPoint = 2;
+			thuHealth = 2;
+			break;
+		case 4.0:
+			thuPoint = 0;
+			thuHealth = 1;
+			break;
+		case 5.0:
+			thuPoint = -1;
+			thuHealth = 1;
+			break;
+		default:
+			thuPoint = 1;
+			thuHealth = 1;
+			break;
+	}
 }
 
 function hide(){
@@ -89,6 +112,12 @@ function checkPowerUp(){
 }
 
 function getHit(){
-	checkPowerUp();
-	die();
+	thuHealth --;
+	if(thuHealth == 0){
+		checkPowerUp();
+		die();
+		return true;
+	}else{
+		return false;
+	}
 }

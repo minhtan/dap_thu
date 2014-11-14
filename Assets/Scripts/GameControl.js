@@ -26,8 +26,6 @@ function gameInit(){
 	currentScore = 0;
 	faultUsed = 0;
 	powerUpUsed = 0;
-	powerX2 = false;
-	powerSlow = false;
 }
 
 function Awake(){
@@ -79,7 +77,7 @@ function showThu(){
 		listHiddenThu = filterHiddenThu();
 		if(listHiddenThu.Count > 0){
 			var trangThaiThu : TrangThai = listHiddenThu[random(listHiddenThu.Count)].GetComponent.<TrangThai>();
-			trangThaiThu.show(randomPowerUp());
+			trangThaiThu.show(randomEvent());
 		}
 		yield waitForRealSecond (interval);
 	}
@@ -87,12 +85,16 @@ function showThu(){
 
 function checkHit(){
 	var thu : GameObject = input.hitDetect();
-	if(thu != null && thu.GetComponent.<TrangThai>() != null){
-		var trangThaiThu : TrangThai = thu.GetComponent.<TrangThai>();
-		if(trangThaiThu.isHitable()){
-			trangThaiThu.getHit();
-			sound.playHitSound();
-			scoring(trangThaiThu.getThuPoint());
+	if(thu != null){
+		sound.playHitSound();
+		if(thu.GetComponent.<TrangThai>() != null){
+			var trangThaiThu : TrangThai = thu.GetComponent.<TrangThai>();
+			if(trangThaiThu.isHitable()){
+				if(trangThaiThu.getHit()){
+					sound.playDieSound();
+					scoring(trangThaiThu.getThuPoint());
+				}
+			}
 		}
 	}
 }
@@ -120,7 +122,7 @@ class ScoreMilestone extends System.Object{
 var scoreMilestones : ScoreMilestone[];
 
 function checkScore(){
-	if(faultUsed >= faultLimit){
+	if(faultUsed >= faultLimit - 1 || currentScore < 0){
 		gameover = true;
 	}
 	for(var i : int = 0; i < scoreMilestones.Length; i++){
@@ -134,10 +136,22 @@ function checkScore(){
 }
 
 function scoring(thuPoint : int){
-	if(powerX2){
-		currentScore = currentScore + thuPoint * 2;
-	}else{
-		currentScore = currentScore + thuPoint;
+	switch(thuPoint){
+		case 0:
+			cancelPowerUp();
+			faultUsed ++;
+			break;
+		case -1:
+			cancelPowerUp();
+			currentScore --;
+			break;
+		default:
+			if(powerX2){
+				currentScore += thuPoint * 2;
+			}else{
+				currentScore += thuPoint;
+			}
+			break;		
 	}
 }
 
@@ -149,35 +163,69 @@ function scoring(thuPoint : int){
 var powerUpLimit : int = 3;
 var powerUpUsed : int;
 var powerUpChance : int = 33;
+var bigThuChance : int = 33;
+var venomThuChance : int = 33;
+var cuteThuChance : int = 33;
 
 //x2
-private var powerX2 : boolean;
+var powerX2 : boolean = false;
 var x2time : int = 5;
 
 //slow mo
-private var powerSlow : boolean;
+var powerSlow : boolean = false;
 var slowTime : int = 5;
 
-function randomPowerUp(){
+function cancelPowerUp(){
+	powerX2 = false;
+	powerSlow = false;
+}
+
+function randomEvent(){
+	var event : float = 0.0;
 	if(powerUpUsed < powerUpLimit && random(100) < powerUpChance){
-		switch(random(2)){
-			case 0:
-				if(!powerX2){
-					powerUpUsed ++;
-					return 1.0;
-				}
-				break;
-			case 1:
-				if(!powerSlow){
-					powerUpUsed ++;
-					return 2.0;
-				}
-				break;
-			default:
-				break;
-		}
+		event = makePowerUp();
+	}else if(random(100) < bigThuChance){
+		event = makeBigThu();
+	}else if(random(100) < venomThuChance){
+		event = makeVenomThu();
+	}else if(random(100) < cuteThuChance){
+		event = makeCuteThu();
 	}
-	return 0.0;
+	return event;
+}
+
+function makePowerUp(){
+	var powerUp : float;
+	switch(random(2)){
+		case 0:
+			if(!powerX2){
+				powerUpUsed ++;
+				powerUp = 1.0;
+			}
+			break;
+		case 1:
+			if(!powerSlow){
+				powerUpUsed ++;
+				powerUp = 2.0;
+			}
+			break;
+		default:
+			powerUp = 0.0;
+			break;
+	}
+	return powerUp;
+}
+
+function makeBigThu(){
+	return 3.0;
+}
+
+function makeVenomThu(){
+	return 4.0;
+}
+
+function makeCuteThu(){
+	return 5.0;
 }
 
 function hitX2(){
