@@ -58,7 +58,21 @@ function show(powerUp : float){
 
 function hide(){
 	anim.SetTrigger("hide");
-	gameControl.miss();
+	checkMiss();
+}
+
+function checkMiss(){
+	while(true){
+		if(isHit){
+			break;
+		}else{
+			if(anim.GetCurrentAnimatorStateInfo(0).IsName("hidden")){
+				gameControl.miss();
+				break;
+			}
+		}
+		yield;
+	}
 }
 
 function checkPowerUp(){
