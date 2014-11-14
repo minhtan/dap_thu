@@ -1,6 +1,25 @@
 fileFormatVersion: 2
 guid: ec42cef4c373cff409e6294def9071ae
 TextureImporter:
+  fileIDToRecycleName:
+    21300000: '[PNG]holes_0'
+    21300002: '[PNG]holes_1'
+    21300004: '[PNG]holes_2'
+    21300006: '[PNG]holes_3'
+    21300008: '[PNG]holes_4'
+    21300010: '[PNG]holes_5'
+    21300012: '[PNG]holes_6'
+    21300014: '[PNG]holes_7'
+    21300016: '[PNG]holes_8'
+    21300018: '[PNG]holes_9'
+    21300020: '[PNG]holes_10'
+    21300022: '[PNG]holes_11'
+    21300024: '[PNG]holes_12'
+    21300026: '[PNG]holes_13'
+    21300028: '[PNG]holes_14'
+    21300030: '[PNG]holes_15'
+    21300032: '[PNG]holes_16'
+    21300034: '[PNG]holes_17'
   serializedVersion: 2
   mipmaps:
     mipMapMode: 0

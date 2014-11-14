@@ -133,7 +133,7 @@ function checkScore(){
 			}
 		}
 	}
-}
+} 
 
 function scoring(thuPoint : int){
 	switch(thuPoint){
@@ -163,17 +163,20 @@ function scoring(thuPoint : int){
 var powerUpLimit : int = 3;
 var powerUpUsed : int;
 var powerUpChance : int = 33;
+var powerTriggerScore : int = 10;
 var bigThuChance : int = 33;
+var bigThuTriggerScore : int = 10;
 var venomThuChance : int = 33;
 var cuteThuChance : int = 33;
+var thuTypeTriggerScore : int = 10;
 
 //x2
 var powerX2 : boolean = false;
-var x2time : int = 5;
+var x2time : int = 10;
 
 //slow mo
 var powerSlow : boolean = false;
-var slowTime : int = 5;
+var slowTime : int = 10;
 
 function cancelPowerUp(){
 	powerX2 = false;
@@ -182,13 +185,13 @@ function cancelPowerUp(){
 
 function randomEvent(){
 	var event : float = 0.0;
-	if(powerUpUsed < powerUpLimit && random(100) < powerUpChance){
+	if(currentScore > powerTriggerScore && powerUpUsed < powerUpLimit && random(100) < powerUpChance){
 		event = makePowerUp();
-	}else if(random(100) < bigThuChance){
+	}else if(currentScore > bigThuTriggerScore && random(100) < bigThuChance){
 		event = makeBigThu();
-	}else if(random(100) < venomThuChance){
+	}else if(currentScore > thuTypeTriggerScore && random(100) < venomThuChance){
 		event = makeVenomThu();
-	}else if(random(100) < cuteThuChance){
+	}else if(currentScore > thuTypeTriggerScore && random(100) < cuteThuChance){
 		event = makeCuteThu();
 	}
 	return event;
