@@ -1,11 +1,13 @@
 ﻿#pragma strict
-
+var gameControl : GameControl;
+	
 function Start(){
-	ShowScore(10);
+	
 }
 
-function getScore(){
-	
+function Update(){
+	gameControl = GetComponent.<GameControl>();
+//	ShowScore(gameControl.GetScore());
 }
 
 function ShowScore(score : int){
