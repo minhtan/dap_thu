@@ -21,8 +21,13 @@ private var listThu : List.<GameObject>;
 //Thoi gian goc giua cac lan thu hien
 var interval : float = 3.0;
 
+//pasue
+var pause : boolean;
+var currentTimeScale : float;
+
 function gameInit(){
 	gameover = false;
+	pause = false;
 	currentScore = 0;
 	faultUsed = 0;
 	powerUpUsed = 0;
@@ -66,7 +71,7 @@ function filterHiddenThu(){
 
 function waitForRealSecond(time : float){
 	var startTime : float = Time.realtimeSinceStartup;
-	while(Time.realtimeSinceStartup < startTime + time){
+	while(Time.realtimeSinceStartup < startTime + time || pause){
 		yield;
 	}
 }
@@ -89,7 +94,7 @@ function checkHit(){
 		sound.playHitSound();
 		if(thu.GetComponent.<TrangThai>() != null){
 			var trangThaiThu : TrangThai = thu.GetComponent.<TrangThai>();
-			if(trangThaiThu.isHitable()){
+			if(trangThaiThu.isHitable() && !pause){
 				if(trangThaiThu.getHit()){
 					sound.playDieSound();
 					scoring(trangThaiThu.getThuPoint());
@@ -101,6 +106,17 @@ function checkHit(){
 
 function miss(){
 	faultUsed ++;
+}
+
+function pauseGame(){
+	if(!pause){
+		pause = true;
+		currentTimeScale = Time.timeScale;
+		Time.timeScale = 0;
+	}else{
+		pause = true;
+		Time.timeScale = currentTimeScale;
+	}
 }
 
 //***************************************************************************************************
@@ -153,6 +169,14 @@ function scoring(thuPoint : int){
 			}
 			break;		
 	}
+}
+
+function getScore(){
+	return currentScore;
+}
+
+function getLife(){
+	return (faultLimit - faultUsed);
 }
 
 //***************************************************************************************************
