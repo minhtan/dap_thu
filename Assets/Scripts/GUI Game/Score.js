@@ -1,15 +1,14 @@
 ﻿#pragma strict
-var gameControl : GameControl;
-	
-function Start(){
-	
+private var gameControl : GameControl;
+var controlObject : GameObject;
+function Awake(){
+	gameControl = controlObject.GetComponent.<GameControl>();
 }
 
-function Update(){
-	gameControl = GetComponent.<GameControl>();
-//	ShowScore(gameControl.GetScore());
+function OnGUI(){
+	showScore(gameControl.getScore());
 }
 
-function ShowScore(score : int){
-	GetComponent(UI.Text).text = "Diem :" + score;
+function showScore(score : int){
+	GetComponent(UI.Text).text = "Diem : " + score;
 }

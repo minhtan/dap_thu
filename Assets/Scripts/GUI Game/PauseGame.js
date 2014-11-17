@@ -1,15 +1,10 @@
 ﻿#pragma strict
 
-var click : boolean = false;
-
+private var gameControl : GameControl;
+var controlObject : GameObject;
+function Awake(){
+	gameControl = controlObject.GetComponent.<GameControl>();
+}
 function PauseClick(){
-	if(click == false){
-		Time.timeScale = 1;
-		click = true;
-		return;
-	}else{
-		Time.timeScale = 0;
-		click = false;
-		return;
-	}
+	gameControl.pauseGame();
 }
