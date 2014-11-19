@@ -8,6 +8,10 @@ var highestScore : int;
 var coin : int;
 var powerUpSlowLimit : int;
 var powerUpX2Limit : int;
+var coinLimit : int = 5;
+private var isCountdownRunning : boolean = false;
+private var endDate : DateTime;
+var minutesToNextCoin : int = 20;
 
 function Awake(){
 	if(control == null){
@@ -16,6 +20,24 @@ function Awake(){
 	}else if(control != this){
 		Destroy(gameObject);
 	}
+}
+
+function Start(){
+	init();
+	countdown();
+}
+
+function Update(){
+	if(coin < coinLimit && !isCountdownRunning){
+		countdown();
+	}
+}
+
+function countdown(){
+	isCountdownRunning = true;
+	var timeSpan : TimeSpan = TimeSpan(0, minutesToNextCoin, 0);
+	endDate = System.DateTime.Now.Add(timeSpan);
+	Debug.Log(endDate);
 }
 
 function playable(){
