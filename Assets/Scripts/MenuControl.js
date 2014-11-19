@@ -1,6 +1,11 @@
 ﻿#pragma strict
 var popupPause : GameObject;
-
+var popupSetting : GameObject;
+var panelBG : GameObject;
+private var gameControl : GameControl;
+function Awake(){
+	gameControl = GameObject.Find("/HolesContainer").GetComponent.<GameControl>();
+}
 function play(){
 	if(PlayerControl.control.playable()){
 		Application.LoadLevel("play");
@@ -9,18 +14,27 @@ function play(){
 	}
 }
 
+function resumeClick(){
+	if(!gameControl.pauseGame()){
+		panelBG.SetActive(false);
+	}
+}
+
 function backMenu(){
 	Application.LoadLevel("menu");
 }
 
 function pauseClick(){
-	if(GameObject.Find("/HolesContainer").GetComponent.<GameControl>().pauseGame()){
+	panelBG.SetActive(true);
+	if(gameControl.pauseGame()){
 		popupPause.SetActive(true);
+		popupSetting.SetActive(false);
 	}else{
 		popupPause.SetActive(false);
 	}
 }
 
-function reStart(){
-	
+function settingClick(){
+	popupSetting.SetActive(true);
+	popupPause.SetActive(false);
 }

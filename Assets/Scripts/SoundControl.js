@@ -20,6 +20,7 @@ function getSource(){
 	var sources = GetComponents.<AudioSource>();
 	bgMusic = sources[0];
 	soundEfct = sources[1];
+	loadSoundPref();
 }
 
 function playDieSound(){
@@ -30,4 +31,15 @@ function playDieSound(){
 function playHitSound(){
 	soundEfct.clip = hitSound;
 	soundEfct.Play();
+}
+function adjustVol(valueBg : float, valueEf : float){
+	bgMusic.volume = valueBg;
+	PlayerPrefs.SetFloat("BgVol", valueBg);
+	soundEfct.volume = valueEf;
+	PlayerPrefs.SetFloat("EfctVol", valueEf);
+}
+
+function loadSoundPref(){
+	bgMusic.volume = PlayerPrefs.GetFloat("BgVol", 1.0);
+	soundEfct.volume = PlayerPrefs.GetFloat("EfctVol", 1.0);
 }
