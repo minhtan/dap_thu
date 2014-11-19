@@ -2,13 +2,32 @@
 
 var dieSound : AudioClip;
 var hitSound : AudioClip;
+static var sound : SoundControl;
+private var bgMusic : AudioSource;
+private var soundEfct : AudioSource;
+
+function Awake(){
+	if(sound == null){
+		DontDestroyOnLoad(gameObject);
+		sound = this;
+		getSource();
+	}else if(sound != this){
+		Destroy(gameObject);
+	}
+}
+	
+function getSource(){
+	var sources = GetComponents.<AudioSource>();
+	bgMusic = sources[0];
+	soundEfct = sources[1];
+}
 
 function playDieSound(){
-	audio.clip = dieSound;
-	audio.Play();
+	soundEfct.clip = dieSound;
+	soundEfct.Play();
 }
 
 function playHitSound(){
-	audio.clip = hitSound;
-	audio.Play();
+	soundEfct.clip = hitSound;
+	soundEfct.Play();
 }

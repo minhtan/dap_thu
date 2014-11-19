@@ -9,9 +9,6 @@ import System.Collections.Generic;
 //input reference
 private var input : InputControl;
 
-//sound reference
-private var sound : SoundControl;
-
 //gameover?
 var gameover : boolean;
 
@@ -60,12 +57,12 @@ function showThu(){
 function checkHit(){
 	var thu : GameObject = input.hitDetect();
 	if(thu != null){
-		sound.playHitSound();
+		SoundControl.sound.playHitSound();
 		if(thu.GetComponent.<TrangThai>() != null){
 			var trangThaiThu : TrangThai = thu.GetComponent.<TrangThai>();
 			if(trangThaiThu.isHitable() && !pause){
 				if(trangThaiThu.getHit()){
-					sound.playDieSound();
+					SoundControl.sound.playDieSound();
 					scoring(trangThaiThu.getThuPoint());
 				}
 			}
@@ -231,7 +228,6 @@ function gameInit(){
 
 function Awake(){
 	input = GetComponent.<InputControl>();
-	sound = GetComponent.<SoundControl>();
 }
 
 function Start () {
