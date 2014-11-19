@@ -22,35 +22,11 @@ private var listThu : List.<GameObject>;
 var interval : float = 3.0;
 
 //pasue
-var pause : boolean;
-var currentTimeScale : float;
-
-function gameInit(){
-	gameover = false;
-	pause = false;
-	currentScore = 0;
-	faultUsed = 0;
-	powerUpUsed = 0;
-}
-
-function Awake(){
-	gameInit();
-	input = GetComponent.<InputControl>();
-	sound = GetComponent.<SoundControl>();
-}
-
-function Start () {
-	listThu = new List.<GameObject>();
- 	getThuList();
- 	showThu();
-}
-
-function Update(){
-	checkScore();
-	checkHit();
-}
+private var pause : boolean;
+private var currentTimeScale : float;
 
 function getThuList(){
+	listThu = new List.<GameObject>();
 	for(var thu : Transform in transform){
 		listThu.Add(thu.gameObject);
 	}
@@ -69,22 +45,15 @@ function filterHiddenThu(){
 	return listHiddenThu;
 }
 
-function waitForRealSecond(time : float){
-	var startTime : float = Time.realtimeSinceStartup;
-	while(Time.realtimeSinceStartup < startTime + time || pause){
-		yield;
-	}
-}
-
 function showThu(){
 	var listHiddenThu : List.<GameObject>;
 	while(!gameover){
 		listHiddenThu = filterHiddenThu();
 		if(listHiddenThu.Count > 0){
-			var trangThaiThu : TrangThai = listHiddenThu[random(listHiddenThu.Count)].GetComponent.<TrangThai>();
-			trangThaiThu.show(randomEvent());
+			var thuToShow : TrangThai = listHiddenThu[random(listHiddenThu.Count)].GetComponent.<TrangThai>();
+			thuToShow.show(randomEvent());
 		}
-		yield waitForRealSecond (interval);
+		yield WaitForSeconds (interval);
 	}
 }
 
@@ -113,9 +82,11 @@ function pauseGame(){
 		pause = true;
 		currentTimeScale = Time.timeScale;
 		Time.timeScale = 0;
+		return true;
 	}else{
-		pause = true;
+		pause = false;
 		Time.timeScale = currentTimeScale;
+		return false;
 	}
 }
 
@@ -184,8 +155,10 @@ function getLife(){
 //***************************************************************************************************
 
 //power up
-var powerUpLimit : int = 3;
-var powerUpUsed : int;
+var powerUpSlowLimit : int;
+var powerUpSlowUsed : int;
+var powerUpX2Limit : int;
+var powerUpX2Used : int;
 var powerUpChance : int = 33;
 var powerTriggerScore : int = 10;
 var bigThuChance : int = 33;
@@ -207,52 +180,29 @@ function cancelPowerUp(){
 	powerSlow = false;
 }
 
+//random event
+// 0 - normal
+// 1 - x2
+// 2 - slow
+// 3 - big
+// 4 - venom
+// 5 - cute
 function randomEvent(){
-	var event : float = 0.0;
-	if(currentScore > powerTriggerScore && powerUpUsed < powerUpLimit && random(100) < powerUpChance){
-		event = makePowerUp();
+	if(currentScore > powerTriggerScore && !powerX2 && powerUpX2Used < powerUpX2Limit && random(100) < powerUpChance){
+		powerUpX2Used ++;
+		return 1.0;
+	}else if(currentScore > powerTriggerScore && !powerSlow && powerUpSlowUsed < powerUpSlowLimit && random(100) < powerUpChance){
+		powerUpSlowUsed ++;
+		return 2.0;
 	}else if(currentScore > bigThuTriggerScore && random(100) < bigThuChance){
-		event = makeBigThu();
+		return 3.0;
 	}else if(currentScore > thuTypeTriggerScore && random(100) < venomThuChance){
-		event = makeVenomThu();
+		return 4.0;
 	}else if(currentScore > thuTypeTriggerScore && random(100) < cuteThuChance){
-		event = makeCuteThu();
+		return 5.0;
+	}else{
+		return 0.0;
 	}
-	return event;
-}
-
-function makePowerUp(){
-	var powerUp : float;
-	switch(random(2)){
-		case 0:
-			if(!powerX2){
-				powerUpUsed ++;
-				powerUp = 1.0;
-			}
-			break;
-		case 1:
-			if(!powerSlow){
-				powerUpUsed ++;
-				powerUp = 2.0;
-			}
-			break;
-		default:
-			powerUp = 0.0;
-			break;
-	}
-	return powerUp;
-}
-
-function makeBigThu(){
-	return 3.0;
-}
-
-function makeVenomThu(){
-	return 4.0;
-}
-
-function makeCuteThu(){
-	return 5.0;
 }
 
 function hitX2(){
@@ -267,4 +217,35 @@ function hitSlow(){
 	yield WaitForSeconds (slowTime);
 	powerSlow = false;
 	Time.timeScale = 1.0;
+}
+
+//***************************************************************************************************
+//*******************************************GAME****************************************************
+//***************************************************************************************************
+
+function gameInit(){
+	gameover = false;
+	pause = false;
+	currentScore = 0;
+	faultUsed = 0;
+	powerUpSlowUsed = 0;
+	powerUpX2Used = 0;
+	powerUpSlowLimit = PlayerControl.control.getPowerUpSlowLimit();
+	powerUpX2Limit = PlayerControl.control.getPowerUpX2Limit();
+}
+
+function Awake(){
+	input = GetComponent.<InputControl>();
+	sound = GetComponent.<SoundControl>();
+}
+
+function Start () {
+	gameInit();
+ 	getThuList();
+ 	showThu();
+}
+
+function Update(){
+	checkScore();
+	checkHit();
 }
