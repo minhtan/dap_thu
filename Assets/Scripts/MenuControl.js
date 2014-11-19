@@ -16,7 +16,6 @@ function backMenu(){
 function pauseClick(){
 	if(GameObject.Find("/HolesContainer").GetComponent.<GameControl>().pauseGame()){
 		popupPause.SetActive(true);
-		
 	}else{
 		popupPause.SetActive(false);
 	}
