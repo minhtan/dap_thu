@@ -2,8 +2,8 @@
 
 var newAnchorX : float = 0;
 var anchorXDelta : float = 0;
-var anchorYDelta : float = 0;
 var newAnchorY : float = 0;
+var anchorYDelta : float = 0;
 
 function Start () {
 	setAnchor();
