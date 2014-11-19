@@ -13,7 +13,7 @@ private var input : InputControl;
 private var sound : SoundControl;
 
 //gameover?
-private var gameover : boolean;
+var gameover : boolean;
 
 //Thu duoc luu vao trong array
 private var listThu : List.<GameObject>;
@@ -22,7 +22,7 @@ private var listThu : List.<GameObject>;
 var interval : float = 3.0;
 
 //pasue
-private var pause : boolean;
+var pause : boolean;
 private var currentTimeScale : float;
 
 function getThuList(){
@@ -224,6 +224,7 @@ function gameInit(){
 	gameover = false;
 	pause = false;
 	currentScore = 0;
+	Time.timeScale = 1;
 	powerUpSlowLimit = PlayerControl.control.getPowerUpSlowLimit();
 	powerUpX2Limit = PlayerControl.control.getPowerUpX2Limit();
 }
