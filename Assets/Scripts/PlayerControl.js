@@ -4,10 +4,10 @@ import System.Runtime.Serialization.Formatters.Binary;
 import System.IO;
 
 static var control : PlayerControl;
-var highestScore : int = 0;
-var coin : int = 3;
-var powerUpSlowLimit : int = 5;
-var powerUpX2Limit : int = 5;
+var highestScore : int;
+var coin : int;
+var powerUpSlowLimit : int;
+var powerUpX2Limit : int;
 
 function Awake(){
 	if(control == null){
@@ -20,6 +20,13 @@ function Awake(){
 
 function playable(){
 	return true;
+}
+
+function init(){
+	if(!loadData()){
+		saveData(0, 3, 5, 5);
+		loadData();
+	}
 }
 
 //***************************************************************************************************
@@ -67,16 +74,8 @@ function loadData(){
 		coin = data.coin;
 		powerUpSlowLimit = data.powerUpSlowLimit;
 		powerUpX2Limit = data.powerUpX2Limit;
+		return true;
 	}else{
-		saveData(highestScore, coin, powerUpSlowLimit, powerUpX2Limit);
-	}
-}
-
-function OnGUI(){
-	if(GUI.Button(Rect(10, 10, 100, 30), "Save")){
-		saveData(highestScore, coin, powerUpSlowLimit, powerUpX2Limit);
-	}
-	if(GUI.Button(Rect(10, 50, 100, 30), "Load")){
-		loadData();
+		return false;
 	}
 }

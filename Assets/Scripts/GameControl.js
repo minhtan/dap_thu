@@ -74,7 +74,7 @@ function checkHit(){
 }
 
 function miss(){
-	faultUsed ++;
+	faultLimit --;
 }
 
 function pauseGame(){
@@ -96,7 +96,6 @@ function pauseGame(){
 
 //so lan duoc danh truot
 var faultLimit : int = 3;
-var faultUsed : int;
 
 //diem
 var currentScore : int;
@@ -109,7 +108,7 @@ class ScoreMilestone extends System.Object{
 var scoreMilestones : ScoreMilestone[];
 
 function checkScore(){
-	if(faultUsed >= faultLimit - 1 || currentScore < 0){
+	if(faultLimit <= 1 || currentScore < 0){
 		gameover = true;
 	}
 	for(var i : int = 0; i < scoreMilestones.Length; i++){
@@ -126,7 +125,7 @@ function scoring(thuPoint : int){
 	switch(thuPoint){
 		case 0:
 			cancelPowerUp();
-			faultUsed ++;
+			faultLimit --;
 			break;
 		case -1:
 			cancelPowerUp();
@@ -147,7 +146,7 @@ function getScore(){
 }
 
 function getLife(){
-	return (faultLimit - faultUsed);
+	return faultLimit;
 }
 
 //***************************************************************************************************
@@ -156,9 +155,7 @@ function getLife(){
 
 //power up
 var powerUpSlowLimit : int;
-var powerUpSlowUsed : int;
 var powerUpX2Limit : int;
-var powerUpX2Used : int;
 var powerUpChance : int = 33;
 var powerTriggerScore : int = 10;
 var bigThuChance : int = 33;
@@ -188,11 +185,11 @@ function cancelPowerUp(){
 // 4 - venom
 // 5 - cute
 function randomEvent(){
-	if(currentScore > powerTriggerScore && !powerX2 && powerUpX2Used < powerUpX2Limit && random(100) < powerUpChance){
-		powerUpX2Used ++;
+	if(currentScore > powerTriggerScore && !powerX2 && powerUpX2Limit > 0 && random(100) < powerUpChance){
+		powerUpX2Limit --;
 		return 1.0;
-	}else if(currentScore > powerTriggerScore && !powerSlow && powerUpSlowUsed < powerUpSlowLimit && random(100) < powerUpChance){
-		powerUpSlowUsed ++;
+	}else if(currentScore > powerTriggerScore && !powerSlow && powerUpSlowLimit > 0 && random(100) < powerUpChance){
+		powerUpSlowLimit --;
 		return 2.0;
 	}else if(currentScore > bigThuTriggerScore && random(100) < bigThuChance){
 		return 3.0;
@@ -227,9 +224,6 @@ function gameInit(){
 	gameover = false;
 	pause = false;
 	currentScore = 0;
-	faultUsed = 0;
-	powerUpSlowUsed = 0;
-	powerUpX2Used = 0;
 	powerUpSlowLimit = PlayerControl.control.getPowerUpSlowLimit();
 	powerUpX2Limit = PlayerControl.control.getPowerUpX2Limit();
 }
