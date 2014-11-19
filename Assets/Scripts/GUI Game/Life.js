@@ -1,14 +1,14 @@
 ﻿#pragma strict
+
 private var gameControl : GameControl;
 var controlObject : GameObject;
 function Awake(){
 	gameControl = controlObject.GetComponent.<GameControl>();
 }
-
 function OnGUI(){
-	showScore(gameControl.getScore());
+	showLife(gameControl.getLife());
 }
 
-function showScore(score : int){
-	GetComponent(UI.Text).text = "Score: " + score;
+function showLife(life : int){
+	GetComponent(UI.Text).text = "Life: " + life;
 }
