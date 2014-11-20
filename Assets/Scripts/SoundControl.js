@@ -43,3 +43,10 @@ function loadSoundPref(){
 	bgMusic.volume = PlayerPrefs.GetFloat("BgVol", 1.0);
 	soundEfct.volume = PlayerPrefs.GetFloat("EfctVol", 1.0);
 }
+
+function getBgVol(){
+	return bgMusic.volume;
+}
+function getSoundVol(){
+	return soundEfct.volume;
+}

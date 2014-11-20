@@ -1,9 +1,7 @@
 ﻿#pragma strict
 
-function play(){
+function startClick(){
 	if(PlayerControl.control.playable()){
 		Application.LoadLevel("play");
-	}else{
-		
 	}
 }
