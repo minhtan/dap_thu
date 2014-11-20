@@ -1,27 +1,23 @@
 ﻿#pragma strict
 
-var parentX : GameObject;
-var parentY : GameObject; 
+var parent : GameObject;
 var sizeImg : float = 64;
-var cam : Camera;
-var ratioPixelToUnitImg : float = 100;
 private var rectTrans : RectTransform;
-private var rectTransX : RectTransform;
-private var rectTransY : RectTransform;
+private var anchor : AnchorDelta;
 function Start(){
 	resizeImg();
 }
 
 function resizeImg(){
-	rectTransX = parentX.GetComponent.<RectTransform>();
-	rectTransY = parentY.GetComponent.<RectTransform>();
+	anchor = parent.GetComponent.<AnchorDelta>();
 	rectTrans = GetComponent.<RectTransform>();
-	var deltaAnchorX : float = rectTransX.anchorMax.x - rectTransX.anchorMin.x;
-	var deltaAnchorY : float = rectTransY.anchorMax.y - rectTransY.anchorMin.y;
+	var deltaAnchorX : float = anchor.getAnchorXDelta();
+	var deltaAnchorY : float = 1;
 	var parentSizeX : float = Screen.width * deltaAnchorX;
 	var parentSizeY : float = Screen.height * deltaAnchorY;
 	var spaceX : float;
 	var spaceY : float;
+	Debug.Log(parentSizeX);
 	if(parentSizeY > sizeImg){
 		spaceX = (parentSizeX - sizeImg)/(2 * parentSizeX); 
 		spaceY = (parentSizeY - sizeImg)/(2 * parentSizeY);
