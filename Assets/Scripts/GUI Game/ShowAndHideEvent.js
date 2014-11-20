@@ -7,14 +7,19 @@ function Awake(){
 	gameControl = objControl.GetComponent.<GameControl>();
 }
 
-function OnGUI () {
+//function Start(){
+//	gameObject.SetActive(false);
+//}
+
+function Update () {
 	showVsHideEvent();
 }
 
 function showVsHideEvent(){
-//	if(){
+//	if(gameControl.isX2()){
 //		gameObject.SetActive(true);
 //	}else{
 //		gameObject.SetActive(false);
 //	}
+	gameObject.SetActive(true);
 }
