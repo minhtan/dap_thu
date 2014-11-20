@@ -130,7 +130,7 @@ function scoring(thuPoint : int){
 			break;
 		default:
 			if(powerX2){
-				currentScore += thuPoint * 2;
+				currentScore += thuPoint * x2Ratio;
 			}else{
 				currentScore += thuPoint;
 			}
@@ -164,10 +164,22 @@ var thuTypeTriggerScore : int = 10;
 //x2
 var powerX2 : boolean = false;
 var x2time : int = 10;
+private var x2Ratio : int = 2;
+var x2Boost : int = 3;
 
 //slow mo
 var powerSlow : boolean = false;
 var slowTime : int = 10;
+private var slowRatio : int = 1;
+var slowBoost : int = 2;
+
+function setX2Boost(){
+	x2Ratio = x2Boost;	
+}
+
+function setSlowBoost(){
+	slowRatio = slowBoost;
+}
 
 function cancelPowerUp(){
 	powerX2 = false;
@@ -208,7 +220,7 @@ function hitX2(){
 function hitSlow(){
 	powerSlow = true;
 	Time.timeScale = 0.5;
-	yield WaitForSeconds (slowTime);
+	yield WaitForSeconds (slowTime * slowRatio);
 	powerSlow = false;
 	Time.timeScale = 1.0;
 }
