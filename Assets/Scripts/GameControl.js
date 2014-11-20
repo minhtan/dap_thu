@@ -157,8 +157,8 @@ function getLife(){
 //***************************************************************************************************
 
 //power up
-var powerUpSlowLimit : int;
-var powerUpX2Limit : int;
+var powerUpSlowLimit : int = 5;
+var powerUpX2Limit : int = 5;
 var powerUpChance : int = 33;
 var powerTriggerScore : int = 10;
 var bigThuChance : int = 33;
@@ -219,6 +219,14 @@ function hitSlow(){
 	Time.timeScale = 1.0;
 }
 
+function isX2(){
+	return powerX2;
+}
+
+function isSlow(){
+	return powerSlow;
+}
+
 //***************************************************************************************************
 //*******************************************GAME****************************************************
 //***************************************************************************************************
@@ -229,8 +237,8 @@ function gameInit(){
 	currentScore = 0;
 	faultLimit = faultLimitStore;
 	Time.timeScale = 1;
-	powerUpSlowLimit = PlayerControl.control.getPowerUpSlowLimit();
-	powerUpX2Limit = PlayerControl.control.getPowerUpX2Limit();
+	powerUpSlowLimit = 5;
+	powerUpX2Limit = 5;
 }
 
 function Awake(){

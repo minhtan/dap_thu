@@ -9,8 +9,6 @@ var highestScore : int;
 var coin : int;
 var coinLimit : int = 5;
 var minutesToNextCoin : int = 20;
-var powerUpSlowLimit : int;
-var powerUpX2Limit : int;
 
 private var isCountdownRunning : boolean;
 private var endDate : DateTime;
@@ -18,7 +16,7 @@ private var endDate : DateTime;
 function OnGUI(){
 	GUI.Label(Rect(10, 10, 100, 100), getRemainTime());
 	if(GUI.Button(Rect(10, 110, 100, 100), "Save")){
-		saveData(highestScore, coin, powerUpSlowLimit, powerUpX2Limit, endDate);
+		saveData(highestScore, coin, endDate);
 	}
 }
 
@@ -34,7 +32,7 @@ function Awake(){
 
 function init(){
 	if(!loadData()){
-		saveData(0, 5, 5, 5, System.DateTime.MinValue);
+		saveData(0, 5, System.DateTime.MinValue);
 		loadData();
 	}
 	if(coin < coinLimit){
@@ -69,14 +67,14 @@ function getMahCoin(){
 			coin = coinLimit;
 			endDate = DateTime.MinValue;
 		}
-		saveData(highestScore, coin, powerUpSlowLimit, powerUpX2Limit, endDate);
+		saveData(highestScore, coin, endDate);
 	}
 }
 
 function setCoinDateDefault(){
 	endDate = DateTime.MinValue;
 	coin = coinLimit;
-	saveData(highestScore, coin, powerUpSlowLimit, powerUpX2Limit, endDate);
+	saveData(highestScore, coin, endDate);
 }
 
 function countdown(){
@@ -84,7 +82,7 @@ function countdown(){
 	if(endDate == DateTime.MinValue){
 		var timeSpan : TimeSpan = TimeSpan(0, minutesToNextCoin, 0);
 		endDate = DateTime.Now.Add(timeSpan);
-		saveData(highestScore, coin, powerUpSlowLimit, powerUpX2Limit, endDate);
+		saveData(highestScore, coin, endDate);
 	}
 	while(endDate > DateTime.Now){
 		yield WaitForRealSecond.wait(1.0);
@@ -92,30 +90,30 @@ function countdown(){
 	coin ++;
 	isCountdownRunning = false;
 	endDate = DateTime.MinValue;
-	saveData(highestScore, coin, powerUpSlowLimit, powerUpX2Limit, endDate);
+	saveData(highestScore, coin, endDate);
 }
 
 function getRemainTime(){
-	var timeSpan : TimeSpan = endDate - DateTime.Now;
-	return timeSpan.Minutes + " : " + timeSpan.Seconds;
+	var timeSpan : TimeSpan = endDate.Subtract(DateTime.Now);
+	if(timeSpan.TotalSeconds < 0){
+		return "full";
+	}else{
+		return timeSpan.Minutes + ":" + timeSpan.Seconds;
+	}
 }
 
 function playable(){
 	if(coin > 0){
 		coin --;
-		saveData(highestScore, coin, powerUpSlowLimit, powerUpX2Limit, endDate);
+		saveData(highestScore, coin, endDate);
 		return true;
 	}else{
 		return false;
 	}
 }
 
-function getPowerUpSlowLimit(){
-	return powerUpSlowLimit;
-}
-
-function getPowerUpX2Limit(){
-	return powerUpX2Limit;
+function getCoin(){
+	return coin;
 }
 
 //***************************************************************************************************
@@ -125,20 +123,16 @@ function getPowerUpX2Limit(){
 private class PlayerData extends System.Object{
 	var highestScore : int;
 	var coin : int;
-	var powerUpSlowLimit : int;
-	var powerUpX2Limit : int;
 	var endDate : DateTime;
 }
 
-function saveData(highestScore : int, coin : int, powerUpSlowLimit : int, powerUpX2Limit : int, endDate : DateTime){
+function saveData(highestScore : int, coin : int, endDate : DateTime){
 	var bf : BinaryFormatter = BinaryFormatter();
 	var file : FileStream = File.Create(Application.persistentDataPath + "/playerData.thu");
 	
 	var data : PlayerData = PlayerData();
 	data.highestScore = highestScore;
 	data.coin = coin;
-	data.powerUpSlowLimit = powerUpSlowLimit;
-	data.powerUpX2Limit = powerUpX2Limit;
 	data.endDate = endDate;
 	
 	bf.Serialize(file, data);
@@ -155,8 +149,6 @@ function loadData(){
 		
 		highestScore = data.highestScore;
 		coin = data.coin;
-		powerUpSlowLimit = data.powerUpSlowLimit;
-		powerUpX2Limit = data.powerUpX2Limit;
 		endDate = data.endDate;
 		
 		return true;
