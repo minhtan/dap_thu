@@ -98,6 +98,7 @@ function restartGame(){
 
 //so lan duoc danh truot
 var faultLimit : int = 3;
+private var faultLimitStore : int;
 
 //diem
 var currentScore : int;
@@ -226,6 +227,7 @@ function gameInit(){
 	gameover = false;
 	pause = false;
 	currentScore = 0;
+	faultLimit = faultLimitStore;
 	Time.timeScale = 1;
 	powerUpSlowLimit = PlayerControl.control.getPowerUpSlowLimit();
 	powerUpX2Limit = PlayerControl.control.getPowerUpX2Limit();
@@ -236,6 +238,7 @@ function Awake(){
 }
 
 function Start () {
+	faultLimitStore = faultLimit;
 	gameInit();
  	getThuList();
  	showThu();
