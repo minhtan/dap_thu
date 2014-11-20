@@ -6,13 +6,6 @@ private var gameControl : GameControl;
 function Awake(){
 	gameControl = GameObject.Find("/HolesContainer").GetComponent.<GameControl>();
 }
-function play(){
-	if(PlayerControl.control.playable()){
-		Application.LoadLevel("play");
-	}else{
-		
-	}
-}
 
 function resumeClick(){
 	if(!gameControl.pauseGame()){
