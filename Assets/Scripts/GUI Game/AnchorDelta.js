@@ -23,8 +23,6 @@ function setAnchor(){
 	rectTrans.anchorMax = Vector2(newAnchorX + anchorXDelta,newAnchorY + anchorYDelta);
 }
 
-function getAnchorXDelta(){
-	return anchorXDelta;
+function getAnchorYDelta(){
+	return anchorYDelta;
 }
-
-
