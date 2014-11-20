@@ -42,7 +42,7 @@ function filterHiddenThu(){
 	return listHiddenThu;
 }
 
-function showThu(){
+function startGame(){
 	var listHiddenThu : List.<GameObject>;
 	while(!gameover){
 		listHiddenThu = filterHiddenThu();
@@ -251,7 +251,7 @@ function Awake(){
 function Start () {
  	getThuList();
  	gameInit();
- 	showThu();
+ 	startGame();
 }
 
 function Update(){

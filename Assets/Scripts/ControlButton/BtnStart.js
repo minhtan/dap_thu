@@ -2,6 +2,6 @@
 
 function startClick(){
 	if(PlayerControl.control.playable()){
-		Application.LoadLevel("play");
+		LevelManager.load("play");
 	}
 }

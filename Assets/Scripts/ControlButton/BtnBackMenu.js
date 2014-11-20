@@ -1,5 +1,5 @@
 ﻿#pragma strict
 
 function backToMenu () {
-	Application.LoadLevel("menu");
+	LevelManager.load("menu");
 }
