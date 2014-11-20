@@ -87,18 +87,12 @@ function pauseGame(){
 	}
 }
 
-function restartGame(){
-	gameInit();
-	cancelPowerUp();
-}
-
 //***************************************************************************************************
 //*******************************************SCORING*************************************************
 //***************************************************************************************************
 
 //so lan duoc danh truot
 var faultLimit : int = 3;
-private var faultLimitStore : int;
 
 //diem
 var currentScore : int;
@@ -235,10 +229,7 @@ function gameInit(){
 	gameover = false;
 	pause = false;
 	currentScore = 0;
-	faultLimit = faultLimitStore;
 	Time.timeScale = 1;
-	powerUpSlowLimit = 5;
-	powerUpX2Limit = 5;
 }
 
 function Awake(){
@@ -246,9 +237,8 @@ function Awake(){
 }
 
 function Start () {
-	faultLimitStore = faultLimit;
-	gameInit();
  	getThuList();
+ 	gameInit();
  	showThu();
 }
 
