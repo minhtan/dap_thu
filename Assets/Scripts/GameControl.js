@@ -213,14 +213,14 @@ function randomEvent(){
 
 function hitX2(){
 	powerX2 = true;
-	yield WaitForSeconds (x2time);
+	yield WaitForRealSecond.wait (x2time);
 	powerX2 = false;
 }
 
 function hitSlow(){
 	powerSlow = true;
 	Time.timeScale = 0.5;
-	yield WaitForSeconds (slowTime * slowRatio);
+	yield WaitForRealSecond.wait (slowTime * slowRatio);
 	powerSlow = false;
 	Time.timeScale = 1.0;
 }
