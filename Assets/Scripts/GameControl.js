@@ -42,7 +42,7 @@ function filterHiddenThu(){
 	return listHiddenThu;
 }
 
-function startGame(){
+function showThu(){
 	var listHiddenThu : List.<GameObject>;
 	while(!gameover){
 		listHiddenThu = filterHiddenThu();
@@ -85,6 +85,10 @@ function pauseGame(){
 		Time.timeScale = currentTimeScale;
 		return false;
 	}
+}
+
+function startGame(){
+	showThu();
 }
 
 //***************************************************************************************************
@@ -251,7 +255,6 @@ function Awake(){
 function Start () {
  	getThuList();
  	gameInit();
- 	startGame();
 }
 
 function Update(){

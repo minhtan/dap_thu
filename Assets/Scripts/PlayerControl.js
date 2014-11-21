@@ -116,6 +116,10 @@ function getCoin(){
 	return coin;
 }
 
+function takeCoin(){
+	coin --;
+}
+
 //***************************************************************************************************
 //*******************************************SAVE LOAD***********************************************
 //***************************************************************************************************
@@ -127,6 +131,19 @@ private class PlayerData extends System.Object{
 }
 
 function saveData(highestScore : int, coin : int, endDate : DateTime){
+	var bf : BinaryFormatter = BinaryFormatter();
+	var file : FileStream = File.Create(Application.persistentDataPath + "/playerData.thu");
+	
+	var data : PlayerData = PlayerData();
+	data.highestScore = highestScore;
+	data.coin = coin;
+	data.endDate = endDate;
+	
+	bf.Serialize(file, data);
+	file.Close();
+}
+
+function saveData(){
 	var bf : BinaryFormatter = BinaryFormatter();
 	var file : FileStream = File.Create(Application.persistentDataPath + "/playerData.thu");
 	
