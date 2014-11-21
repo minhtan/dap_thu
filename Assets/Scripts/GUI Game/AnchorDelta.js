@@ -26,3 +26,7 @@ function setAnchor(){
 function getAnchorYDelta(){
 	return anchorYDelta;
 }
+
+function getAnchorXDelta(){
+	return anchorXDelta;
+}
