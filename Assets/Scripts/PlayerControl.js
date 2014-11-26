@@ -13,13 +13,6 @@ var minutesToNextCoin : int = 20;
 private var isCountdownRunning : boolean;
 private var endDate : DateTime;
 
-function OnGUI(){
-	GUI.Label(Rect(10, 10, 100, 100), getRemainTime());
-	if(GUI.Button(Rect(10, 110, 100, 100), "Save")){
-		saveData(highestScore, coin, endDate);
-	}
-}
-
 function Awake(){
 	if(control == null){
 		DontDestroyOnLoad(gameObject);
