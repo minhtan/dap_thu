@@ -10,8 +10,10 @@ function Awake(){
 }
 
 function boostSlow(){
-	PlayerControl.control.takeCoin();
-	PlayerControl.control.saveData();
-	gameControl.setSlowBoost();
-	objSlow.GetComponent.<UI.Image>().sprite = boostImg;
+	if(PlayerControl.control.takeCoin()){
+		PlayerControl.control.saveData();
+		gameControl.setSlowBoost();
+		objSlow.GetComponent.<UI.Image>().sprite = boostImg;
+		GetComponent.<UI.Button>().interactable = false;
+	}
 }

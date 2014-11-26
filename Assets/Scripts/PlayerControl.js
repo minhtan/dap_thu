@@ -110,7 +110,12 @@ function getCoin(){
 }
 
 function takeCoin(){
-	coin --;
+	if(coin > 0){
+		coin --;
+		return true;
+	}else{
+		return false;	
+	}
 }
 
 //***************************************************************************************************
