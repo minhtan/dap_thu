@@ -4,10 +4,10 @@
 var AppID:String = "759941887393911";
  
 // The link attached to this post.
-var Link:String = "https://play.google.com/store/apps/developer?id=Shukerullah";
+var Link:String = "https://play.google.com/store/apps/developer?id=Pugsstudio";
  
 // The URL of a picture attached to this post. The picture must be at least 200px by 200px.
-var Picture:String = "http://imageshack.us/scaled/landing/843/gh4o.png";
+var Picture:String = "http://41.media.tumblr.com/tumblr_m33bzueNGX1qgi304o1_r1_1280.jpg";
  
 // The name of the link attachment.
 var Name:String = "My New Score";

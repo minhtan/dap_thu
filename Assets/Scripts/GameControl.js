@@ -22,6 +22,9 @@ var interval : float = 3.0;
 var pause : boolean;
 private var currentTimeScale : float;
 
+//game over canvas
+var gameOverCanvas : GameObject;
+
 function getThuList(){
 	listThu = new List.<GameObject>();
 	for(var thu : Transform in transform){
@@ -91,9 +94,6 @@ function startGame(){
 	showThu();
 }
 
-function isGameOver(){
-	return gameOver;
-}
 //***************************************************************************************************
 //*******************************************SCORING*************************************************
 //***************************************************************************************************
@@ -112,8 +112,9 @@ class ScoreMilestone extends System.Object{
 var scoreMilestones : ScoreMilestone[];
 
 function checkScore(){
-	if(faultLimit <= 1 || currentScore < 0){
+	if(faultLimit < 1 || currentScore < 0){
 		gameover = true;
+		gameOverCanvas.SetActive(true);
 	}
 	for(var i : int = 0; i < scoreMilestones.Length; i++){
 		if(scoreMilestones[i].score != null && scoreMilestones[i].interval != null){
