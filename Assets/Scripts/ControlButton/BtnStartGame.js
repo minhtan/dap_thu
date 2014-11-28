@@ -2,13 +2,18 @@
 
 var controlObject : GameObject;
 private var gameControl : GameControl;
-var panel : GameObject;
+var panelHide : GameObject;
+var panelShow : GameObject;
 
 function Awake(){
 	gameControl = controlObject.GetComponent.<GameControl>();
 }
 
 function startClick(){
-	gameControl.startGame();
-	panel.SetActive(false);
+	if(PlayerControl.control.takeCoin()){
+		gameControl.startGame();
+		panelHide.SetActive(false);
+	}else{
+		panelShow.SetActive(true);
+	}
 }
