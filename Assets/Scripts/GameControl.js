@@ -60,7 +60,7 @@ function showThu(){
 function checkHit(){
 	var thu : GameObject = input.hitDetect();
 	if(thu != null){
-		SoundControl.sound.playHitSound();
+//		SoundControl.sound.playHitSound();
 		if(thu.GetComponent.<TrangThai>() != null){
 			var trangThaiThu : TrangThai = thu.GetComponent.<TrangThai>();
 			if(trangThaiThu.isHitable() && !pause){
@@ -113,8 +113,7 @@ var scoreMilestones : ScoreMilestone[];
 
 function checkScore(){
 	if(faultLimit < 1 || currentScore < 0){
-		gameover = true;
-		gameOverCanvas.SetActive(true);
+		gameOver();
 	}
 	for(var i : int = 0; i < scoreMilestones.Length; i++){
 		if(scoreMilestones[i].score != null && scoreMilestones[i].interval != null){
@@ -125,6 +124,14 @@ function checkScore(){
 		}
 	}
 } 
+
+function gameOver(){
+	gameover = true;
+	gameOverCanvas.SetActive(true);
+	if(currentScore > PlayerControl.control.getHighestScore()){
+		PlayerControl.control.newHighScore(currentScore);	
+	}
+}
 
 function scoring(thuPoint : int){
 	switch(thuPoint){
@@ -168,18 +175,20 @@ var bigThuTriggerScore : int = 10;
 var venomThuChance : int = 33;
 var cuteThuChance : int = 33;
 var thuTypeTriggerScore : int = 10;
+var x2Show : boolean;
+var slowShow : boolean;
 
 //x2
-var powerX2 : boolean = false;
+var powerX2 : boolean;
 var x2time : int = 10;
 private var x2Ratio : int = 2;
 var x2Boost : int = 3;
 
 //slow mo
-var powerSlow : boolean = false;
+var powerSlow : boolean;
 var slowTime : int = 10;
 private var slowRatio : int = 1;
-var slowBoost : int = 2;
+var slowBoost : float = 2.0;
 
 function setX2Boost(){
 	x2Ratio = x2Boost;	
@@ -189,9 +198,18 @@ function setSlowBoost(){
 	slowRatio = slowBoost;
 }
 
+function x2ShowNoMore(){
+	x2Show = false;
+}
+
+function slowShowNoMore(){
+	slowShow = false;
+}
+
 function cancelPowerUp(){
 	powerX2 = false;
 	powerSlow = false;
+	Time.timeScale = 1;
 }
 
 //random event
@@ -202,11 +220,13 @@ function cancelPowerUp(){
 // 4 - venom
 // 5 - cute
 function randomEvent(){
-	if(currentScore > powerTriggerScore && !powerX2 && powerUpX2Limit > 0 && random(100) < powerUpChance){
+	if(currentScore > powerTriggerScore && !powerX2 && !x2Show && powerUpX2Limit > 0 && random(100) < powerUpChance){
 		powerUpX2Limit --;
+		x2Show = true;
 		return 1.0;
-	}else if(currentScore > powerTriggerScore && !powerSlow && powerUpSlowLimit > 0 && random(100) < powerUpChance){
+	}else if(currentScore > powerTriggerScore && !powerSlow && !slowShow && powerUpSlowLimit > 0 && random(100) < powerUpChance){
 		powerUpSlowLimit --;
+		slowShow = true;
 		return 2.0;
 	}else if(currentScore > bigThuTriggerScore && random(100) < bigThuChance){
 		return 3.0;
@@ -248,6 +268,10 @@ function isSlow(){
 function gameInit(){
 	gameover = false;
 	pause = false;
+	powerX2 = false;
+	powerSlow = false;
+	x2Show = false;
+	slowShow = false;
 	currentScore = 0;
 	Time.timeScale = 1;
 }

@@ -82,6 +82,15 @@ function checkThuType(event : float){
 function hide(){
 	anim.SetTrigger("hide");
 	checkMiss();
+	checkSpecial();
+}
+
+function checkSpecial(){
+	if(anim.GetFloat("powerUp") == 1.0){
+		gameControl.x2ShowNoMore();
+	}else if(anim.GetFloat("powerUp") == 2.0){
+		gameControl.slowShowNoMore();
+	}
 }
 
 function checkMiss(){
@@ -89,7 +98,7 @@ function checkMiss(){
 		if(isHit){
 			break;
 		}else{
-			if(anim.GetCurrentAnimatorStateInfo(0).IsName("hidden")){
+			if(anim.GetCurrentAnimatorStateInfo(0).IsName("hidden") && anim.GetFloat("powerUp") < 4){
 				gameControl.miss();
 				break;
 			}
@@ -115,6 +124,7 @@ function getHit(){
 	thuHealth --;
 	if(thuHealth == 0){
 		checkPowerUp();
+		checkSpecial();
 		die();
 		return true;
 	}else{

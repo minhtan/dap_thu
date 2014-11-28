@@ -15,8 +15,8 @@ function Awake(){
 }
 
 static function load(name : String){
-	level.loadingImage.SetActive(true);
-	yield WaitForSeconds(2);
+//	level.loadingImage.SetActive(true);
+//	yield;
 	Application.LoadLevel(name);
-	level.loadingImage.SetActive(false);
+//	level.loadingImage.SetActive(false);
 }

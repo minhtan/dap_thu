@@ -36,10 +36,6 @@ function init(){
 	isCountdownRunning = false;
 }
 
-function Start(){
-	Debug.Log(endDate);
-}
-
 function Update(){
 	if(coin < coinLimit && !isCountdownRunning){
 		countdown();
@@ -60,14 +56,14 @@ function getMahCoin(){
 			coin = coinLimit;
 			endDate = DateTime.MinValue;
 		}
-		saveData(highestScore, coin, endDate);
+		saveData();
 	}
 }
 
 function setCoinDateDefault(){
 	endDate = DateTime.MinValue;
 	coin = coinLimit;
-	saveData(highestScore, coin, endDate);
+	saveData();
 }
 
 function countdown(){
@@ -75,7 +71,7 @@ function countdown(){
 	if(endDate == DateTime.MinValue){
 		var timeSpan : TimeSpan = TimeSpan(0, minutesToNextCoin, 0);
 		endDate = DateTime.Now.Add(timeSpan);
-		saveData(highestScore, coin, endDate);
+		saveData();
 	}
 	while(endDate > DateTime.Now){
 		yield WaitForRealSecond.wait(1.0);
@@ -83,12 +79,12 @@ function countdown(){
 	coin ++;
 	isCountdownRunning = false;
 	endDate = DateTime.MinValue;
-	saveData(highestScore, coin, endDate);
+	saveData();
 }
 
 function getRemainTime(){
 	var timeSpan : TimeSpan = endDate.Subtract(DateTime.Now);
-	if(timeSpan.TotalSeconds < 0){
+	if(timeSpan.TotalSeconds < 0 && coin >= coinLimit){
 		return "full";
 	}else{
 		return timeSpan.Minutes + ":" + timeSpan.Seconds;
@@ -98,15 +94,24 @@ function getRemainTime(){
 function playable(){
 	if(coin > 0){
 		coin --;
-		saveData(highestScore, coin, endDate);
+		saveData();
 		return true;
 	}else{
 		return false;
 	}
 }
 
+function newHighScore(score : int){
+	highestScore = score;
+	saveData();
+}
+
 function getCoin(){
 	return coin;
+}
+
+function getHighestScore(){
+	return highestScore;
 }
 
 function takeCoin(){

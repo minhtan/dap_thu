@@ -1,5 +1,5 @@
 ﻿#pragma strict
 
-function Update () {
+function OnGUI () {
 	 GetComponent.<UI.Text>().text = PlayerControl.control.getRemainTime();
 }
