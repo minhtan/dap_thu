@@ -108,6 +108,8 @@ var currentScore : int;
 class ScoreMilestone extends System.Object{
 	var score : int;
 	var interval : float;
+	var x2able : boolean = false;
+	var slowable : boolean = false;
 }
 var scoreMilestones : ScoreMilestone[];
 
@@ -116,11 +118,11 @@ function checkScore(){
 		gameOver();
 	}
 	for(var i : int = 0; i < scoreMilestones.Length; i++){
-		if(scoreMilestones[i].score != null && scoreMilestones[i].interval != null){
-			if(currentScore > scoreMilestones[i].score && interval > scoreMilestones[i].interval){
-				interval = scoreMilestones[i].interval;
-				break;
-			}
+		if(currentScore > scoreMilestones[i].score && interval > scoreMilestones[i].interval){
+			interval = scoreMilestones[i].interval;
+			x2able = scoreMilestones[i].x2able;
+			slowable = scoreMilestones[i].slowable;
+			break;
 		}
 	}
 } 
@@ -169,22 +171,23 @@ function getLife(){
 var powerUpSlowLimit : int = 5;
 var powerUpX2Limit : int = 5;
 var powerUpChance : int = 33;
-var powerTriggerScore : int = 10;
 var bigThuChance : int = 33;
 var bigThuTriggerScore : int = 10;
 var venomThuChance : int = 33;
 var cuteThuChance : int = 33;
 var thuTypeTriggerScore : int = 10;
-var x2Show : boolean;
-var slowShow : boolean;
 
 //x2
+var x2able : boolean = false;
+var x2Show : boolean;
 var powerX2 : boolean;
 var x2time : int = 10;
 private var x2Ratio : int = 2;
 var x2Boost : int = 3;
 
 //slow mo
+var slowable : boolean = false;
+var slowShow : boolean;
 var powerSlow : boolean;
 var slowTime : int = 10;
 private var slowRatio : int = 1;
@@ -220,11 +223,11 @@ function cancelPowerUp(){
 // 4 - venom
 // 5 - cute
 function randomEvent(){
-	if(currentScore > powerTriggerScore && !powerX2 && !x2Show && powerUpX2Limit > 0 && random(100) < powerUpChance){
+	if(x2able && !powerX2 && !x2Show && powerUpX2Limit > 0 && random(100) < powerUpChance){
 		powerUpX2Limit --;
 		x2Show = true;
 		return 1.0;
-	}else if(currentScore > powerTriggerScore && !powerSlow && !slowShow && powerUpSlowLimit > 0 && random(100) < powerUpChance){
+	}else if(slowable && !powerSlow && !slowShow && powerUpSlowLimit > 0 && random(100) < powerUpChance){
 		powerUpSlowLimit --;
 		slowShow = true;
 		return 2.0;
@@ -272,6 +275,8 @@ function gameInit(){
 	powerSlow = false;
 	x2Show = false;
 	slowShow = false;
+	x2able = false;
+	slowable = false;
 	currentScore = 0;
 	Time.timeScale = 1;
 }
