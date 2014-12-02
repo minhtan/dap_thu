@@ -168,13 +168,11 @@ function getLife(){
 //***************************************************************************************************
 
 //power up
-var powerUpSlowLimit : int = 5;
-var powerUpX2Limit : int = 5;
 var powerUpChance : int = 33;
 var bigThuChance : int = 33;
-var bigThuTriggerScore : int = 10;
 var venomThuChance : int = 33;
 var cuteThuChance : int = 33;
+var bigThuTriggerScore : int = 10;
 var thuTypeTriggerScore : int = 10;
 
 //x2
@@ -223,12 +221,10 @@ function cancelPowerUp(){
 // 4 - venom
 // 5 - cute
 function randomEvent(){
-	if(x2able && !powerX2 && !x2Show && powerUpX2Limit > 0 && random(100) < powerUpChance){
-		powerUpX2Limit --;
+	if(x2able && !powerX2 && !x2Show && random(100) < powerUpChance){
 		x2Show = true;
 		return 1.0;
-	}else if(slowable && !powerSlow && !slowShow && powerUpSlowLimit > 0 && random(100) < powerUpChance){
-		powerUpSlowLimit --;
+	}else if(slowable && !powerSlow && !slowShow && random(100) < powerUpChance){
 		slowShow = true;
 		return 2.0;
 	}else if(currentScore > bigThuTriggerScore && random(100) < bigThuChance){
@@ -244,14 +240,14 @@ function randomEvent(){
 
 function hitX2(){
 	powerX2 = true;
-	yield WaitForRealSecond.wait (x2time);
+	yield WaitForSeconds (x2time);
 	powerX2 = false;
 }
 
 function hitSlow(){
 	powerSlow = true;
 	Time.timeScale = 0.5;
-	yield WaitForRealSecond.wait (slowTime * slowRatio);
+	yield WaitForSeconds (slowTime * slowRatio * 0.5);
 	powerSlow = false;
 	Time.timeScale = 1.0;
 }
