@@ -2,6 +2,6 @@
 
 var panel : GameObject;
 
-function showPanel(){
+function showPanel(){ 
 	panel.SetActive(true);
 }
