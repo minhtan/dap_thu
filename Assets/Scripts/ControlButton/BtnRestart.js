@@ -1,4 +1,11 @@
 ﻿#pragma strict
+
+var panelEndCoin : GameObject;
+
 function restart(){
-	LevelManager.load("play");
+	if(PlayerControl.control.takeCoin()){
+		LevelManager.load("play");
+	}else{
+		panelEndCoin.SetActive(true);
+	}
 }
