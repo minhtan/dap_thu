@@ -1,5 +1,5 @@
 ﻿#pragma strict
 
 function OnGUI () {
-	 GetComponent.<UI.Text>().text = PlayerControl.control.getRemainTime();
+	 GetComponent.<UI.Text>().text = PlControl.control.getRemainTime();
 }

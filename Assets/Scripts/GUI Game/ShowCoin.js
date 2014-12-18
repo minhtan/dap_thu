@@ -1,5 +1,5 @@
 ﻿#pragma strict
 
 function Update () {
-	GetComponent.<UI.Text>().text = PlayerControl.control.getCoin().ToString();
+	GetComponent.<UI.Text>().text = PlControl.control.getCoin().ToString();
 }
