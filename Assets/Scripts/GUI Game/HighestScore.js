@@ -6,7 +6,7 @@ function Awake(){
 }
 
 function OnGUI(){
-	showScore(PlayerControl.control.getHighestScore());
+	showScore(PlControl.control.getHighestScore());
 }
 
 function showScore(score : int){

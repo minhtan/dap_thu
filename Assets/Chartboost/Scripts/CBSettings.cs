@@ -23,8 +23,8 @@ namespace ChartboostSDK {
 
 		const string androidExampleAppIDLabel = "CB_ANDROID_APP_ID";
 	    const string androidExampleAppSignatureLabel = "CB_ANDROID_APP_SIGNATURE";
-	    const string androidExampleAppID = "4f7b433509b6025804000002";
-	    const string androidExampleAppSignature = "dd2d41b69ac01b80f443f5b6cf06096d457f82bd";
+		const string androidExampleAppID = "548e85650d602508cf4b880c";
+		const string androidExampleAppSignature = "e84d055929aa869e950c6a4bc625a93eb0a8aa1e";
 
 		const string amazonExampleAppIDLabel = "CB_AMAZON_APP_ID";
 	    const string amazonExampleAppSignatureLabel = "CB_AMAZON_APP_SIGNATURE";

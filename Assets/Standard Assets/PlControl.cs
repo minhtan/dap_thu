@@ -9,7 +9,7 @@ public class PlControl : MonoBehaviour {
 	public int highestScore;	
 	public int coin;
 	public int coinLimit = 5;
-	public int minutesToNextCoin = 20;
+	public int minutesToNextCoin = 1;
 
 	private bool isCountdownRunning;
 	private DateTime endDate;
@@ -38,8 +38,8 @@ public class PlControl : MonoBehaviour {
 	}
 
 	public void getMahCoin(){
-		 TimeSpan timeSpan;
-		 int mahCoin = 0;
+		TimeSpan timeSpan;
+		int mahCoin = 0;
 		if(endDate < DateTime.Now){
 			timeSpan = DateTime.Now.Subtract(endDate);
 			mahCoin = (int)timeSpan.TotalMinutes / minutesToNextCoin;
@@ -69,7 +69,7 @@ public class PlControl : MonoBehaviour {
 			saveData();
 		}
 		while(endDate > DateTime.Now){
-			yield return WFRSecond.wait(1);
+			yield return StartCoroutine(WFRSecond.wait(1));
 		}
 		coin ++;
 		isCountdownRunning = false;
@@ -96,7 +96,7 @@ public class PlControl : MonoBehaviour {
 		}
 	}
 
-	private void newHighScore(int score){
+	public void newHighScore(int score){
 		highestScore = score;
 		saveData();
 	}
@@ -126,17 +126,24 @@ public class PlControl : MonoBehaviour {
 
 	void Update () {
 		if(coin < coinLimit && !isCountdownRunning){
-			countdown();
+			StartCoroutine( countdown());
 		}
 	}
 	//***************************************************************************************************
 	//*******************************************SAVE LOAD***********************************************
 	//***************************************************************************************************
+	[System.Serializable]
+	public class PlayerData : System.Object {
+		
+		public int highestScore;
+		public int coin;
+		public DateTime endDate;
+	}
 
 	private void saveData(int highestScore, int coin, DateTime endDate){
 		BinaryFormatter bf = new BinaryFormatter();
 		FileStream file = File.Create(Application.persistentDataPath + "/playerData.thu");
-		
+
 		PlayerData data = new PlayerData();
 		data.highestScore = highestScore;
 		data.coin = coin;
@@ -166,7 +173,6 @@ public class PlControl : MonoBehaviour {
 
 			PlayerData data  = bf.Deserialize(file) as PlayerData;
 			file.Close();
-			
 			highestScore = data.highestScore;
 			coin = data.coin;
 			endDate = data.endDate;
