@@ -17,7 +17,7 @@ public class WatchVideoAds : MonoBehaviour {
 	}
 	 
 	void didCompleteRewardedVideo  (CBLocation location, int t){
-		if(PlControl.control.getCoin() <5){
+		if(PlControl.control.getCoin() < 5){
 			PlControl.control.addCoin ();
 		}
 	}
