@@ -13,11 +13,13 @@ public class ShowPictureAds : MonoBehaviour {
 	void OnEnable(){
 //		Chartboost.didCacheInterstitial += didCacheInterstitial;
 		Chartboost.didDismissInterstitial += didDismissInterstitial;
+		Chartboost.didFailToLoadInterstitial += didFailToLoadInterstitial;
 	}
 
 	void OnDisable(){
 //		Chartboost.didCacheInterstitial -= didCacheInterstitial;
 		Chartboost.didDismissInterstitial -= didDismissInterstitial ;
+		Chartboost.didFailToLoadInterstitial -= didFailToLoadInterstitial;
 	}
 
 //	void didCacheInterstitial (CBLocation location){
@@ -28,4 +30,9 @@ public class ShowPictureAds : MonoBehaviour {
 		panelLoading.SetActive (false);
 //		Chartboost.Destroy (this);
 	}
+
+	void didFailToLoadInterstitial(CBLocation location, CBImpressionError er){
+		panelLoading.SetActive (false);
+	}
+
 }
