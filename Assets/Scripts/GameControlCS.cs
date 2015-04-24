@@ -49,7 +49,7 @@ public class GameControlCS : MonoBehaviour {
     private List<GameObject> filterHiddenThu(){
 	    List<GameObject> listHiddenThu = new List<GameObject>();
 	    foreach(GameObject thu in listThu){
-		    if(thu.GetComponent<TrangThaiCS>().isDead())
+		    if(thu.GetComponent<newTrangThai>().isDead())
 			    listHiddenThu.Add(thu);
 	    }
 	    return listHiddenThu;
@@ -60,7 +60,7 @@ public class GameControlCS : MonoBehaviour {
 	    while(!gameover){
 		    listHiddenThu = filterHiddenThu();
 		    if(listHiddenThu.Count > 0){
-				TrangThaiCS thuToShow = listHiddenThu[random(listHiddenThu.Count)].GetComponent<TrangThaiCS>();
+				newTrangThai thuToShow = listHiddenThu[random(listHiddenThu.Count)].GetComponent<newTrangThai>();
 			    thuToShow.show(randomEvent());
 		    }
 			yield return new WaitForSeconds(interval);
@@ -72,8 +72,8 @@ public class GameControlCS : MonoBehaviour {
 			GameObject thu = input.hitDetect();
 			if(thu != null){
 				//		SoundControl.sound.playHitSound();
-				if(thu.GetComponent<TrangThaiCS>() != null){
-					TrangThaiCS trangThaiThu = thu.GetComponent<TrangThaiCS>();
+				if(thu.GetComponent<newTrangThai>() != null){
+					newTrangThai trangThaiThu = thu.GetComponent<newTrangThai>();
 					if(trangThaiThu.isHitable() && !pause){
 						if(trangThaiThu.getHit()){
 							SoundControlCS.sound.playDieSound();
@@ -127,9 +127,12 @@ public class GameControlCS : MonoBehaviour {
     public ScoreMilestone[] scoreMilestones;
 
      public void checkScore(){
-	    if(faultLimit < 1 || currentScore < 0){
+	    if(faultLimit < 1){
 		    gameOver();
 	    }
+        if(currentScore < 0){
+            currentScore = 0;
+        }
 	    for(int i = 0; i < scoreMilestones.Length; i++){
 		    if(currentScore > scoreMilestones[i].score && interval > scoreMilestones[i].interval){
 			    interval = scoreMilestones[i].interval;
@@ -158,9 +161,9 @@ public class GameControlCS : MonoBehaviour {
 			    cancelPowerUp();
 			    faultLimit --;
 			    break;
-		    case -1:
+		    case -5:
 			    cancelPowerUp();
-			    currentScore --;
+                currentScore += thuPoint;
 			    break;
 		    default:
 			    if(powerX2){
@@ -189,12 +192,12 @@ public class GameControlCS : MonoBehaviour {
     //***************************************************************************************************
 
     //power up
-    public int powerUpChance = 33;
-    public int bigThuChance = 33;
-    public int venomThuChance = 33;
-    public int cuteThuChance = 33;
-    public int bigThuTriggerScore = 10;
-    public int thuTypeTriggerScore = 10;
+    public int powerUpChance;
+    public int bigThuChance;
+    public int lifePelThuChance;
+    public int scorePelThuChance;
+    public int bigThuTriggerScore;
+    public int thuTypeTriggerScore;
 
     //x2
     public bool x2able = false;
@@ -210,14 +213,14 @@ public class GameControlCS : MonoBehaviour {
     public bool powerSlow;
     public int slowTime = 10;
     private int slowRatio = 1;
-    public float slowBoost = 2.0f;
+    public int slowBoost = 2;
 
     public void setX2Boost(){
 	    x2Ratio = x2Boost;	
     }
 
     public void setSlowBoost(){
-	    slowRatio = System.Convert.ToInt32(slowBoost);
+	    slowRatio = slowBoost;
     }
 
     public void x2ShowNoMore(){
@@ -239,8 +242,8 @@ public class GameControlCS : MonoBehaviour {
     // 1 - x2
     // 2 - slow
     // 3 - big
-    // 4 - venom
-    // 5 - cute
+    // 4 - lifePel
+    // 5 - scorePel
     private float randomEvent(){
 	    if(x2able && !powerX2 && !x2Show && random(100) < powerUpChance){
 		    x2Show = true;
@@ -250,9 +253,9 @@ public class GameControlCS : MonoBehaviour {
 		    return 2.0f;
 	    }else if(currentScore > bigThuTriggerScore && random(100) < bigThuChance){
 		    return 3.0f;
-	    }else if(currentScore > thuTypeTriggerScore && random(100) < venomThuChance){
+	    }else if(currentScore > thuTypeTriggerScore && random(100) < lifePelThuChance){
 		    return 4.0f;
-	    }else if(currentScore > thuTypeTriggerScore && random(100) < cuteThuChance){
+	    }else if(currentScore > thuTypeTriggerScore && random(100) < scorePelThuChance){
 		    return 5.0f;
 	    }else{
 		    return 0.0f;
@@ -268,7 +271,7 @@ public class GameControlCS : MonoBehaviour {
 	public IEnumerator hitSlow(){
 	    powerSlow = true;
 	    Time.timeScale = 0.5f;
-	    yield return StartCoroutine(WFRSecond.wait(slowTime * slowRatio * 0.5f));
+	    yield return StartCoroutine(WFRSecond.wait(slowTime * slowRatio));
 	    powerSlow = false;
 	    Time.timeScale = 1.0f;
     }
@@ -300,6 +303,7 @@ public class GameControlCS : MonoBehaviour {
 
     void Awake(){
 	    input = GetComponent<InputControlCS>();
+        Application.targetFrameRate = 60;
     }
 
     void Start() {

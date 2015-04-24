@@ -13,7 +13,7 @@ public class TrangThaiCS : MonoBehaviour {
     private int thuPoint;
     private int thuHealth;
 
-        public int getThuPoint(){
+    public int getThuPoint(){
 	    return thuPoint;
     }
 
